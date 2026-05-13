@@ -1,0 +1,9 @@
+{
+  "name": "dealscout-ai",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ]
+}
