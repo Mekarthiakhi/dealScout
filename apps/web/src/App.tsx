@@ -143,16 +143,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-10">
+    <div className="min-h-screen text-white px-6 py-10">
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
 
-        <h1 className="text-5xl font-bold">
+        <h1 className="text-6xl font-bold gradient-text">
           DealScout AI
         </h1>
 
-        <p className="text-zinc-400 mt-3 text-lg">
+        <p className="text-cyan-200/70 mt-3 text-lg">
           Compare prices across
           multiple platforms instantly
         </p>
@@ -167,7 +167,7 @@ export default function App() {
 
             {/* SEARCH ICON */}
 
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xl z-10">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-xl z-10">
               🔍
             </div>
 
@@ -277,14 +277,14 @@ export default function App() {
                 }
               }}
               placeholder="Search iPhone, Shoes, Laptop..."
-              className="w-full pl-14 pr-4 py-4 rounded-2xl text-black outline-none text-lg"
+              className="w-full pl-14 pr-4 py-4 rounded-2xl glass-card text-white outline-none text-lg placeholder-cyan-200/40 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
             />
 
             {/* SUGGESTIONS */}
 
             {showSuggestions &&
               query && (
-                <div className="absolute top-full left-0 w-full mt-2 bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden shadow-2xl z-50">
+                <div className="absolute top-full left-0 w-full mt-2 glass-card rounded-2xl overflow-hidden shadow-2xl z-50 border border-cyan-400/20">
 
                   {suggestions.length >
                   0 ? (
@@ -308,12 +308,12 @@ export default function App() {
                               false
                             );
                           }}
-                          className={`w-full text-left px-5 py-4 transition border-b border-zinc-800 last:border-none
+                          className={`w-full text-left px-5 py-4 transition border-b border-cyan-400/10 last:border-none
                           ${
                             selectedSuggestion ===
                             index
-                              ? "bg-zinc-700 text-white"
-                              : "hover:bg-zinc-800 text-white"
+                              ? "bg-cyan-500/20 text-cyan-100"
+                              : "hover:bg-cyan-400/10 text-white"
                           }`}
                         >
                           🔍 {item}
@@ -321,7 +321,7 @@ export default function App() {
                       )
                     )
                   ) : (
-                    <div className="px-5 py-4 text-zinc-400">
+                    <div className="px-5 py-4 text-cyan-200/50">
                       No suggestions
                       found
                     </div>
@@ -339,7 +339,7 @@ export default function App() {
                 e.target.value
               )
             }
-            className="bg-zinc-900 text-white px-4 py-2 rounded-xl border border-zinc-700"
+            className="glass-card text-white px-4 py-4 rounded-2xl border border-cyan-400/20 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none cursor-pointer"
           >
             <option value="low">
               Price: Low to High
@@ -358,7 +358,7 @@ export default function App() {
         {/* ERROR */}
 
         {error && (
-          <p className="text-red-500 mt-6">
+          <p className="text-red-400 mt-6 text-lg">
             {error}
           </p>
         )}
@@ -367,7 +367,7 @@ export default function App() {
 
         {!loading &&
           products.length === 0 && (
-            <div className="mt-16 text-center text-zinc-500">
+            <div className="mt-16 text-center text-cyan-200/50">
               <p className="text-xl">
                 Search products to
                 compare deals
@@ -384,27 +384,27 @@ export default function App() {
               (_, index) => (
                 <div
                   key={index}
-                  className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden animate-pulse"
+                  className="glass-card rounded-3xl overflow-hidden animate-pulse border border-cyan-400/20"
                 >
-                  <div className="bg-zinc-800 h-64 w-full"></div>
+                  <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 h-64 w-full"></div>
 
                   <div className="p-5 space-y-4">
 
                     <div className="flex justify-between items-center">
-                      <div className="h-5 bg-zinc-800 rounded w-24"></div>
+                      <div className="h-5 bg-cyan-400/20 rounded w-24"></div>
 
-                      <div className="h-5 bg-zinc-800 rounded w-12"></div>
+                      <div className="h-5 bg-cyan-400/20 rounded w-12"></div>
                     </div>
 
                     <div className="space-y-2">
-                      <div className="h-4 bg-zinc-800 rounded w-full"></div>
+                      <div className="h-4 bg-cyan-400/20 rounded w-full"></div>
 
-                      <div className="h-4 bg-zinc-800 rounded w-4/5"></div>
+                      <div className="h-4 bg-cyan-400/20 rounded w-4/5"></div>
                     </div>
 
-                    <div className="h-8 bg-zinc-800 rounded w-32"></div>
+                    <div className="h-8 bg-cyan-400/20 rounded w-32"></div>
 
-                    <div className="h-12 bg-zinc-800 rounded-xl w-full"></div>
+                    <div className="h-12 bg-cyan-400/20 rounded-xl w-full"></div>
                   </div>
                 </div>
               )
@@ -489,7 +489,7 @@ export default function App() {
                 transition={{
                   duration: 0.25,
                 }}
-                className="relative bg-zinc-900 rounded-3xl max-w-5xl w-full overflow-hidden border border-zinc-800 shadow-2xl z-10"
+                className="relative glass-card rounded-3xl max-w-5xl w-full overflow-hidden border border-cyan-400/30 shadow-2xl z-10"
               >
 
                 {/* CLOSE */}
@@ -544,7 +544,7 @@ export default function App() {
                   <div className="p-8">
 
                     <div className="flex items-center justify-between">
-                      <h2 className="text-4xl font-bold text-white">
+                      <h2 className="text-4xl font-bold gradient-text">
                         {
                           selectedProduct.platform
                         }
@@ -560,24 +560,24 @@ export default function App() {
                       )}
                     </div>
 
-                    <p className="text-zinc-300 mt-5 text-lg leading-8">
+                    <p className="text-cyan-100 mt-5 text-lg leading-8">
                       {
                         selectedProduct.title
                       }
                     </p>
 
-                    <p className="text-5xl font-bold text-white mt-8">
+                    <p className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mt-8">
                       ₹
                       {selectedProduct.price.toLocaleString()}
                     </p>
 
-                    <div className="mt-8 bg-zinc-800 rounded-2xl p-5 border border-zinc-700">
-                      <h3 className="text-xl font-bold mb-3">
+                    <div className="mt-8 glass-card rounded-2xl p-5 border border-cyan-400/20">
+                      <h3 className="text-xl font-bold mb-3 text-cyan-300">
                         🤖 AI Deal
                         Summary
                       </h3>
 
-                      <p className="text-zinc-300 leading-7">
+                      <p className="text-cyan-100/80 leading-7">
                         This is currently
                         one of the
                         best-value deals
@@ -591,7 +591,7 @@ export default function App() {
                       }
                       target="_blank"
                       rel="noreferrer"
-                      className="block w-full text-center mt-10 bg-white text-black py-4 rounded-2xl font-bold hover:bg-zinc-200 transition"
+                      className="block w-full text-center mt-10 bg-gradient-to-r from-cyan-400 to-blue-500 text-white py-4 rounded-2xl font-bold hover:shadow-lg hover:shadow-cyan-400/50 transition"
                     >
                       View Deal
                     </a>

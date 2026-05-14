@@ -18,15 +18,15 @@ export default function ProductCard({
     
   return (
 <div
-  onClick={onClick} className="relative bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden hover:border-zinc-600 hover:scale-[1.02] transition duration-300 shadow-xl">      
+  onClick={onClick} className="relative glass-card glass-card-hover rounded-3xl overflow-hidden border border-cyan-400/20">      
       
         {isLowest && (
-        <div className="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
+        <div className="absolute top-3 right-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-cyan-400/50 z-10">
           🔥 Best Deal
         </div>
       )}
       {/* Image */}
-      <div className="bg-white h-64 overflow-hidden">
+      <div className="bg-gradient-to-br from-cyan-400/10 to-blue-500/10 h-64 overflow-hidden">
         <img
           src={product.image}
           alt={product.title}
@@ -38,7 +38,7 @@ export default function ProductCard({
       <div className="p-5">
         {/* Platform + Rating */}
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">
+          <h2 className="text-xl font-bold text-cyan-300">
             {product.platform}
           </h2>
 
@@ -50,17 +50,17 @@ export default function ProductCard({
         </div>
 
         {/* Title */}
-        <p className="mt-3 text-zinc-300 text-sm leading-6 h-12 overflow-hidden">
+        <p className="mt-3 text-cyan-100/70 text-sm leading-6 h-12 overflow-hidden">
           {product.title}
         </p>
 
         {/* Price */}
-      <p className="mt-5 text-3xl font-bold text-white">
+      <p className="mt-5 text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
   ₹{product.price.toLocaleString()}
 </p>
 
 {isLowest && (
-  <p className="text-green-400 text-sm mt-2 font-medium">
+  <p className="text-cyan-400 text-sm mt-2 font-medium">
      Save ₹{(savings ?? 0).toLocaleString()}
   </p>
 )}
@@ -70,7 +70,7 @@ export default function ProductCard({
           href={product.url}
           target="_blank"
           rel="noreferrer"
-          className="block w-full text-center mt-5 bg-white text-black py-3 rounded-xl font-semibold hover:bg-zinc-200 transition"
+          className="block w-full text-center mt-5 bg-gradient-to-r from-cyan-400 to-blue-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-cyan-400/50 transition"
         >
           View Deal
         </a>

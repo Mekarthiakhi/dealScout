@@ -6,3 +6,36 @@ body {
   margin: 0;
   font-family: sans-serif;
 }
+
+/* Gradient Background */
+html, body, #root {
+  background: linear-gradient(135deg, #0f172a 0%, #0c1b2e 25%, #051e34 50%, #0a1628 75%, #0f172a 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Glass-morphism utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card-hover {
+  transition: all 0.3s ease;
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(34, 211, 238, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(34, 211, 238, 0.15);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 50%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
