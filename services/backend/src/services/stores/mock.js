@@ -1,0 +1,63 @@
+/**
+ * Mock product data for fallback and testing
+ */
+export function getMockProducts(query) {
+  const products = [
+    {
+      id: `amazon-${Date.now()}-1`,
+      title: `${query} - Premium Quality`,
+      price: 12999,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
+      platform: 'Amazon',
+      url: `https://www.amazon.in/s?k=${encodeURIComponent(query)}`,
+      rating: 4.5
+    },
+    {
+      id: `flipkart-${Date.now()}-1`,
+      title: `${query} - Best Price Guarantee`,
+      price: 11499,
+      image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&h=300&fit=crop',
+      platform: 'Flipkart',
+      url: `https://www.flipkart.com/search?q=${encodeURIComponent(query)}`,
+      rating: 4.7
+    },
+    {
+      id: `ebay-${Date.now()}-1`,
+      title: `${query} - Great Value Deal`,
+      price: 13499,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop',
+      platform: 'eBay',
+      url: `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(query)}`,
+      rating: 4.3
+    },
+    {
+      id: `walmart-${Date.now()}-1`,
+      title: `${query} - Everyday Low Price`,
+      price: 12499,
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop',
+      platform: 'Walmart',
+      url: `https://www.walmart.com/search?q=${encodeURIComponent(query)}`,
+      rating: 4.6
+    },
+    {
+      id: `newegg-${Date.now()}-1`,
+      title: `${query} - Tech Specialist`,
+      price: 14299,
+      image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=300&fit=crop',
+      platform: 'Newegg',
+      url: `https://www.newegg.com/p/N82E16${encodeURIComponent(query)}`,
+      rating: 4.4
+    },
+    {
+      id: `bestbuy-${Date.now()}-1`,
+      title: `${query} - Expert Service`,
+      price: 13799,
+      image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&h=300&fit=crop',
+      platform: 'Best Buy',
+      url: `https://www.bestbuy.com/site/searchpage.jsp?st=${encodeURIComponent(query)}`,
+      rating: 4.8
+    }
+  ];
+
+  return products;
+}

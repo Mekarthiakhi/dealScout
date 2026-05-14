@@ -74,8 +74,9 @@ export default function App() {
         return;
       }
 
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const response = await fetch(
-        `http://localhost:5000/api/suggestions?q=${value}`
+        `${API_BASE_URL}/api/suggestions?q=${encodeURIComponent(value)}`
       );
 
       const data = await response.json();
@@ -85,7 +86,8 @@ export default function App() {
       );
 
     } catch (error) {
-      console.error(error);
+      console.error('Suggestions error:', error);
+      setSuggestions([]);
     }
   };
 
