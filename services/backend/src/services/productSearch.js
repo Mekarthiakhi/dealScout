@@ -4,14 +4,25 @@ import { searchFlipkart } from './stores/flipkart.js';
 import { searchEbay } from './stores/ebay.js';
 import { searchWalmart } from './stores/walmart.js';
 import { getMockProducts } from './stores/mock.js';
+import { searchWithGoogle } from './googleSearch.js';
 
 /**
  * Search for products across multiple stores and return the best deals
+ * Includes real Google API integration for dynamic product search
  */
 export async function searchProducts(query) {
   try {
+    console.log(`🔍 Searching for: ${query}`);
+
     // Try to fetch from real stores with fallback to mock data
     const storeSearches = [
+      // Try Google Custom Search API first (real data)
+      searchWithGoogle(query).catch(e => {
+        console.warn('Google Search failed:', e.message);
+        return [];
+      }),
+      
+      // Try store-specific APIs
       searchAmazon(query).catch(e => {
         console.warn('Amazon search failed:', e.message);
         return [];
@@ -28,21 +39,27 @@ export async function searchProducts(query) {
         console.warn('Walmart search failed:', e.message);
         return [];
       }),
-      getMockProducts(query) // Fallback mock data
+      
+      // Always include mock data as fallback
+      getMockProducts(query)
     ];
 
     const results = await Promise.allSettled(storeSearches);
     
     // Collect all products from successful searches
     let allProducts = [];
-    results.forEach((result) => {
+    results.forEach((result, index) => {
       if (result.status === 'fulfilled' && Array.isArray(result.value)) {
+        console.log(`✅ Source ${index}: Got ${result.value.length} products`);
         allProducts = allProducts.concat(result.value);
       }
     });
 
+    console.log(`📊 Total products before dedup: ${allProducts.length}`);
+
     // If no real results, use mock data
     if (allProducts.length === 0) {
+      console.log('⚠️  No real results found, using mock data');
       allProducts = getMockProducts(query);
     }
 
@@ -61,6 +78,7 @@ export async function searchProducts(query) {
       }
     });
 
+    console.log(`✨ Final results: ${unique.length} unique products`);
     return unique;
   } catch (error) {
     console.error('Search products error:', error);

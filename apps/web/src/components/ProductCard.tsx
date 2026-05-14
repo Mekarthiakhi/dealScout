@@ -1,20 +1,18 @@
 import { Product } from "../types/product";
 
-interface Props {
+interface ProductCardProps {
   product: Product;
-    isLowest?: boolean;
+  isLowest?: boolean;
   savings?: number;
-   onClick?: () => void;
-   selectedProduct:string;
+  onClick?: () => void;
 }
 
 export default function ProductCard({
   product,
   isLowest,
   savings,
-   onClick,
-   selectedProduct
-}: Props) {
+  onClick
+}: ProductCardProps) {
     
   return (
 <div
