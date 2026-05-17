@@ -141,11 +141,11 @@ export default function App() {
   /* -------------------------------- */
   /* PRICE CHART LOGIC */
   /* -------------------------------- */
-  
+
   // Aggregate average price per store for the chart
   const storeChartData = useMemo(() => {
     if (products.length === 0) return [];
-    
+
     const storeMap = new Map<string, { total: number, count: number }>();
     products.forEach(p => {
       const current = storeMap.get(p.platform) || { total: 0, count: 0 };
@@ -169,15 +169,15 @@ export default function App() {
   const extractSpecs = (title: string) => {
     const specs = [];
     const t = title.toUpperCase();
-    
+
     // Storage
     const storageMatch = t.match(/(\d+(GB|TB))\s*(ROM|STORAGE)/i) || t.match(/\b(64GB|128GB|256GB|512GB|1TB|2TB)\b/i);
     if (storageMatch) specs.push({ label: 'Storage', value: storageMatch[0], icon: '💾' });
-    
+
     // RAM (Exclude common storage numbers if not explicitly labeled)
     const ramMatch = t.match(/(\d+GB)\s*RAM/i) || t.match(/\b(4GB|6GB|8GB|12GB|16GB)\b(?!\s*(ROM|STORAGE))/i);
     if (ramMatch && (!storageMatch || ramMatch[0] !== storageMatch[0])) specs.push({ label: 'Memory', value: ramMatch[0], icon: '🧠' });
-    
+
     // Network & Display & Condition
     if (t.includes('5G')) specs.push({ label: 'Network', value: '5G Ready', icon: '📶' });
     if (t.includes('OLED') || t.includes('AMOLED')) specs.push({ label: 'Display', value: 'OLED', icon: '📱' });
@@ -191,7 +191,7 @@ export default function App() {
   /* -------------------------------- */
   const generateAIAnalysis = (product: Product, lowest: number, average: number) => {
     let analysis = `This ${product.platform} deal is currently priced at ₹${product.price.toLocaleString()}. `;
-    
+
     // Price Analysis
     if (product.price === lowest) {
       analysis += `🔥 This is the absolute best value across all tracked platforms today! You are saving ₹${(average - product.price).toLocaleString()} compared to the market average. `;
@@ -227,21 +227,21 @@ export default function App() {
 
   return (
     <div className="cyber-bg text-slate-200 font-sans min-h-screen relative overflow-x-hidden">
-      
+
       {/* ---------------- NAVBAR / HEADER ---------------- */}
       <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-                <span className="text-xl font-bold text-white">D</span>
-             </div>
-             <h1 className="text-2xl font-black tracking-tight text-white hidden sm:block">
-               Deal<span className="text-cyan-400">Scout</span> AI
-             </h1>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+              <span className="text-xl font-bold text-white">D</span>
+            </div>
+            <h1 className="text-2xl font-black tracking-tight text-white hidden sm:block">
+              Deal<span className="text-cyan-400">Scout</span> AI
+            </h1>
           </div>
-          
+
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={() => setIsWishlistOpen(true)}
               className="relative p-2 rounded-full hover:bg-slate-800 transition-colors"
             >
@@ -258,15 +258,15 @@ export default function App() {
 
       {/* ---------------- MAIN CONTENT ---------------- */}
       <main className="max-w-7xl mx-auto px-6 py-10">
-        
+
         {/* Title Section */}
         <div className="text-center max-w-3xl mx-auto mb-10">
           <h2 className="text-5xl sm:text-6xl font-black text-white mb-4 tracking-tight drop-shadow-lg">
-             Compare Prices. <br/>
-             <span className="gradient-text">Save Instantly.</span>
+            Compare Prices. <br />
+            <span className="gradient-text">Save Instantly.</span>
           </h2>
           <p className="text-slate-400 text-lg sm:text-xl">
-             Our AI searches across multiple platforms to find you the absolute best deals in real-time.
+            Our AI searches across multiple platforms to find you the absolute best deals in real-time.
           </p>
         </div>
 
@@ -275,9 +275,9 @@ export default function App() {
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
             <div className="relative flex items-center bg-slate-900 rounded-2xl border border-slate-700 focus-within:border-cyan-400 transition-colors shadow-2xl">
-              
+
               <div className="pl-6 text-cyan-400 text-xl">🔍</div>
-              
+
               <input
                 value={query}
                 onChange={(e) => {
@@ -317,7 +317,7 @@ export default function App() {
                 className="w-full bg-transparent text-white px-4 py-5 outline-none text-lg placeholder-slate-500"
               />
 
-              <button 
+              <button
                 onClick={() => { handleSearch(); setShowSuggestions(false); }}
                 className="mr-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/30 transition-all active:scale-95"
               >
@@ -367,7 +367,7 @@ export default function App() {
                 <div key={i} className="h-32 bg-slate-800/50 rounded-2xl animate-pulse border border-slate-700/50"></div>
               ))}
             </div>
-            
+
             {/* Mock Grid Loader */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, index) => (
@@ -393,12 +393,12 @@ export default function App() {
 
         {/* ---------------- RESULTS DASHBOARD ---------------- */}
         {!loading && products.length > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-10"
           >
-            
+
             {/* STATS PANEL */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="glass-panel rounded-3xl p-6 flex items-center justify-between border-cyan-400/30">
@@ -406,7 +406,7 @@ export default function App() {
                   <p className="text-cyan-400/80 text-sm font-bold uppercase tracking-wider mb-1">Lowest Price Found</p>
                   <p className="text-4xl font-black text-white">₹{lowestPrice.toLocaleString()}</p>
                   {bestDealProduct && (
-                     <p className="text-slate-400 text-sm mt-2">on <span className="text-cyan-300">{bestDealProduct.platform}</span></p>
+                    <p className="text-slate-400 text-sm mt-2">on <span className="text-cyan-300">{bestDealProduct.platform}</span></p>
                   )}
                 </div>
                 <div className="w-16 h-16 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-3xl border border-cyan-500/20">
@@ -426,40 +426,20 @@ export default function App() {
               </div>
 
               {/* DYNAMIC CHART */}
-              <div className="glass-panel rounded-3xl p-6 flex flex-col justify-end min-h-[160px]">
-                 <p className="text-slate-400 text-sm font-bold uppercase tracking-wider mb-4 absolute top-6">Price Comparison</p>
-                 <div className="flex items-end gap-2 h-20 mt-4">
-                   {storeChartData.map((data, i) => {
-                     const heightPercentage = Math.max((data.avgPrice / maxChartPrice) * 100, 10);
-                     const isLowest = data.avgPrice === storeChartData[0].avgPrice;
-                     return (
-                       <div key={i} className="flex-1 flex flex-col items-center justify-end group">
-                         <div className="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity mb-1 font-bold absolute -top-6 bg-slate-800 px-2 py-1 rounded">
-                           ₹{data.avgPrice}
-                         </div>
-                         <div 
-                           className={`w-full rounded-t-md animate-grow-up ${isLowest ? 'bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]' : 'bg-slate-700'}`} 
-                           style={{ height: `${heightPercentage}%` }}
-                         ></div>
-                         <span className="text-[10px] text-slate-500 mt-2 truncate w-full text-center">{data.platform.substring(0,3)}</span>
-                       </div>
-                     );
-                   })}
-                 </div>
-              </div>
+
             </div>
 
             {/* CONTROLS (FILTERS & SORT) */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
-              
+
               <div className="flex flex-wrap gap-2">
                 {stores.map(store => (
                   <button
                     key={store}
                     onClick={() => setActiveStoreFilter(store)}
                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-all
-                      ${activeStoreFilter === store 
-                        ? 'bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(34,211,238,0.4)]' 
+                      ${activeStoreFilter === store
+                        ? 'bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(34,211,238,0.4)]'
                         : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
                       }`}
                   >
@@ -493,11 +473,11 @@ export default function App() {
                 />
               ))}
             </div>
-            
+
             {filteredProducts.length === 0 && (
-               <div className="text-center py-20 bg-slate-900/30 rounded-3xl border border-slate-800 border-dashed">
-                 <p className="text-slate-500 text-xl">No products match this filter.</p>
-               </div>
+              <div className="text-center py-20 bg-slate-900/30 rounded-3xl border border-slate-800 border-dashed">
+                <p className="text-slate-500 text-xl">No products match this filter.</p>
+              </div>
             )}
           </motion.div>
         )}
@@ -506,7 +486,7 @@ export default function App() {
         {!loading && products.length === 0 && !error && (
           <div className="mt-20 text-center">
             <div className="w-24 h-24 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-800 shadow-xl">
-               <span className="text-4xl opacity-50">🛒</span>
+              <span className="text-4xl opacity-50">🛒</span>
             </div>
             <p className="text-slate-400 text-xl font-medium">Search for a product to find the best deals.</p>
           </div>
@@ -517,12 +497,12 @@ export default function App() {
       <AnimatePresence>
         {isWishlistOpen && (
           <>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setIsWishlistOpen(false)}
               className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50"
             />
-            <motion.div 
+            <motion.div
               initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="fixed top-0 right-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 flex flex-col shadow-2xl"
@@ -547,28 +527,28 @@ export default function App() {
                     <div key={item.id} className="bg-slate-800/50 border border-slate-700 p-4 rounded-2xl flex gap-4 items-center group">
                       <img src={item.image} alt={item.title} className="w-20 h-20 object-contain bg-slate-900 p-2 rounded-xl border border-slate-800" />
                       <div className="flex-1">
-                         <p className="text-xs text-cyan-400 font-bold mb-1">{item.platform}</p>
-                         <h4 className="text-sm font-medium text-slate-200 line-clamp-2 leading-snug">{item.title}</h4>
-                         <p className="text-lg font-bold text-white mt-1">₹{item.price.toLocaleString()}</p>
+                        <p className="text-xs text-cyan-400 font-bold mb-1">{item.platform}</p>
+                        <h4 className="text-sm font-medium text-slate-200 line-clamp-2 leading-snug">{item.title}</h4>
+                        <p className="text-lg font-bold text-white mt-1">₹{item.price.toLocaleString()}</p>
                       </div>
                       <div className="flex flex-col gap-2">
                         <a href={item.url} target="_blank" rel="noreferrer" className="w-8 h-8 bg-cyan-500/10 text-cyan-400 rounded-full flex items-center justify-center hover:bg-cyan-500 hover:text-white transition-colors">
-                           →
+                          →
                         </a>
                         <button onClick={() => toggleWishlist(item)} className="w-8 h-8 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                           ✕
+                          ✕
                         </button>
                       </div>
                     </div>
                   ))
                 )}
               </div>
-              
+
               {wishlist.length > 0 && (
                 <div className="p-6 border-t border-slate-800 bg-slate-900">
-                   <button onClick={() => setWishlist([])} className="w-full py-3 text-slate-400 font-medium hover:text-red-400 transition-colors">
-                     Clear All Items
-                   </button>
+                  <button onClick={() => setWishlist([])} className="w-full py-3 text-slate-400 font-medium hover:text-red-400 transition-colors">
+                    Clear All Items
+                  </button>
                 </div>
               )}
             </motion.div>
@@ -581,32 +561,32 @@ export default function App() {
         {selectedProduct && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedProduct(null)} className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" />
-            
+
             <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-slate-900 rounded-3xl max-w-5xl w-full overflow-hidden border border-slate-700 shadow-2xl z-10 flex flex-col md:flex-row">
               <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 bg-slate-800 text-slate-400 p-2 rounded-full hover:bg-slate-700 hover:text-white transition z-20">✕</button>
-              
+
               {/* Left Image */}
               <div className="w-full md:w-1/2 bg-slate-950 p-10 flex items-center justify-center relative">
-                 <button onClick={() => toggleWishlist(selectedProduct)} className="absolute top-6 left-6 bg-slate-800 p-3 rounded-full text-xl shadow-lg border border-slate-700 hover:scale-110 transition z-20">
-                   {wishlist.some(p => p.id === selectedProduct.id) ? '💖' : '🤍'}
-                 </button>
-                 <img src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[400px] object-contain drop-shadow-2xl relative z-10" />
+                <button onClick={() => toggleWishlist(selectedProduct)} className="absolute top-6 left-6 bg-slate-800 p-3 rounded-full text-xl shadow-lg border border-slate-700 hover:scale-110 transition z-20">
+                  {wishlist.some(p => p.id === selectedProduct.id) ? '💖' : '🤍'}
+                </button>
+                <img src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[400px] object-contain drop-shadow-2xl relative z-10" />
               </div>
-              
+
               {/* Right Details */}
               <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative overflow-hidden">
                 <div className="absolute -top-32 -right-32 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
-                
+
                 <span className="text-sm font-black tracking-widest text-cyan-400 uppercase mb-4">{selectedProduct.platform}</span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-white leading-snug mb-6">{selectedProduct.title}</h2>
-                
+
                 <div className="flex items-end gap-4 mb-6">
                   <p className="text-5xl font-black text-white">₹{selectedProduct.price.toLocaleString()}</p>
                   {selectedProduct.rating && (
-                     <p className="text-yellow-400 font-bold mb-2 flex items-center gap-1">⭐ {selectedProduct.rating}</p>
+                    <p className="text-yellow-400 font-bold mb-2 flex items-center gap-1">⭐ {selectedProduct.rating}</p>
                   )}
                 </div>
-                
+
                 {/* Specs Badges */}
                 {(() => {
                   const specs = extractSpecs(selectedProduct.title);
@@ -623,14 +603,14 @@ export default function App() {
                     </div>
                   );
                 })()}
-                
+
                 <div className="bg-slate-800/50 border border-slate-700 p-5 rounded-2xl mb-8">
                   <h3 className="text-cyan-400 font-bold mb-2 flex items-center gap-2">🤖 AI Analysis</h3>
                   <p className="text-slate-300 text-sm leading-relaxed">
                     {generateAIAnalysis(selectedProduct, lowestPrice, averagePrice)}
                   </p>
                 </div>
-                
+
                 <a href={selectedProduct.url} target="_blank" rel="noreferrer" className="block text-center bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-lg py-4 rounded-xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all transform hover:scale-[1.02]">
                   Visit Store & Buy
                 </a>
