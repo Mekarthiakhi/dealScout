@@ -1,5 +1,6 @@
 import { Product } from "../types/product";
 import { motion } from "framer-motion";
+import LazyImage from "./LazyImage";
 
 interface ProductCardProps {
   product: Product;
@@ -64,7 +65,7 @@ export default function ProductCard({
         className="relative h-56 bg-slate-900 overflow-hidden group cursor-pointer p-6 flex items-center justify-center border-b border-slate-800"
       >
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-0 opacity-80"></div>
-        <img
+        <LazyImage
           src={product.image}
           alt={product.title}
           className="max-w-full max-h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl"

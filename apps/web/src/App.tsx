@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { searchProducts } from "./services/product.service";
 import { Product } from "./types/product";
 import ProductCard from "./components/ProductCard";
+import LazyImage from "./components/LazyImage";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-export default function App() {
+function AppContent() {
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -525,7 +527,7 @@ export default function App() {
                 ) : (
                   wishlist.map(item => (
                     <div key={item.id} className="bg-slate-800/50 border border-slate-700 p-4 rounded-2xl flex gap-4 items-center group">
-                      <img src={item.image} alt={item.title} className="w-20 h-20 object-contain bg-slate-900 p-2 rounded-xl border border-slate-800" />
+                      <LazyImage src={item.image} alt={item.title} className="w-20 h-20 object-contain bg-slate-900 p-2 rounded-xl border border-slate-800" />
                       <div className="flex-1">
                         <p className="text-xs text-cyan-400 font-bold mb-1">{item.platform}</p>
                         <h4 className="text-sm font-medium text-slate-200 line-clamp-2 leading-snug">{item.title}</h4>
@@ -570,7 +572,7 @@ export default function App() {
                 <button onClick={() => toggleWishlist(selectedProduct)} className="absolute top-6 left-6 bg-slate-800 p-3 rounded-full text-xl shadow-lg border border-slate-700 hover:scale-110 transition z-20">
                   {wishlist.some(p => p.id === selectedProduct.id) ? '💖' : '🤍'}
                 </button>
-                <img src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[400px] object-contain drop-shadow-2xl relative z-10" />
+                <LazyImage src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[400px] object-contain drop-shadow-2xl relative z-10" />
               </div>
 
               {/* Right Details */}
@@ -635,5 +637,17 @@ export default function App() {
       </AnimatePresence>
 
     </div>
+  );
+}
+
+/**
+ * Main App Component wrapped with ErrorBoundary
+ * ErrorBoundary catches any errors in the component tree and displays a fallback UI
+ */
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
   );
 }
