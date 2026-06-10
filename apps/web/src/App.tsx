@@ -4,8 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { searchProducts } from "./services/product.service";
 import { Product } from "./types/product";
 import ProductCard from "./components/ProductCard";
+import LazyImage from "./components/LazyImage";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { SkeletonLoader, SearchingLoader } from "./components/SkeletonLoader";
 
-export default function App() {
+function AppContent() {
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -360,35 +363,27 @@ export default function App() {
 
         {/* ---------------- LOADING STATE ---------------- */}
         {loading && (
-          <div className="space-y-10">
-            {/* Mock Dashboard Loader */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-32 bg-slate-800/50 rounded-2xl animate-pulse border border-slate-700/50"></div>
-              ))}
-            </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-10"
+            >
+              {/* Searching Loader Animation */}
+              <SearchingLoader />
 
-            {/* Mock Grid Loader */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, index) => (
-                <div key={index} className="glass-card rounded-3xl overflow-hidden animate-pulse">
-                  <div className="bg-slate-800 h-56 w-full"></div>
-                  <div className="p-5 space-y-4">
-                    <div className="flex justify-between items-center">
-                      <div className="h-5 bg-slate-800 rounded w-24"></div>
-                      <div className="h-5 bg-slate-800 rounded w-12"></div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-4 bg-slate-800 rounded w-full"></div>
-                      <div className="h-4 bg-slate-800 rounded w-4/5"></div>
-                    </div>
-                    <div className="h-8 bg-slate-800 rounded w-32"></div>
-                    <div className="h-12 bg-slate-800 rounded-xl w-full"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+              {/* Skeleton Grid Below */}
+              <div className="mt-20">
+                <h3 className="text-lg font-semibold text-slate-300 mb-6 text-center">
+                  Preview of results while searching...
+                </h3>
+                <SkeletonLoader count={12} variant="grid" />
+              </div>
+            </motion.div>
+          </AnimatePresence>
         )}
 
         {/* ---------------- RESULTS DASHBOARD ---------------- */}
@@ -525,7 +520,7 @@ export default function App() {
                 ) : (
                   wishlist.map(item => (
                     <div key={item.id} className="bg-slate-800/50 border border-slate-700 p-4 rounded-2xl flex gap-4 items-center group">
-                      <img src={item.image} alt={item.title} className="w-20 h-20 object-contain bg-slate-900 p-2 rounded-xl border border-slate-800" />
+                      <LazyImage src={item.image} alt={item.title} className="w-20 h-20 object-contain bg-slate-900 p-2 rounded-xl border border-slate-800" />
                       <div className="flex-1">
                         <p className="text-xs text-cyan-400 font-bold mb-1">{item.platform}</p>
                         <h4 className="text-sm font-medium text-slate-200 line-clamp-2 leading-snug">{item.title}</h4>
@@ -570,7 +565,7 @@ export default function App() {
                 <button onClick={() => toggleWishlist(selectedProduct)} className="absolute top-6 left-6 bg-slate-800 p-3 rounded-full text-xl shadow-lg border border-slate-700 hover:scale-110 transition z-20">
                   {wishlist.some(p => p.id === selectedProduct.id) ? '💖' : '🤍'}
                 </button>
-                <img src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[400px] object-contain drop-shadow-2xl relative z-10" />
+                <LazyImage src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[400px] object-contain drop-shadow-2xl relative z-10" />
               </div>
 
               {/* Right Details */}
@@ -635,5 +630,17 @@ export default function App() {
       </AnimatePresence>
 
     </div>
+  );
+}
+
+/**
+ * Main App Component wrapped with ErrorBoundary
+ * ErrorBoundary catches any errors in the component tree and displays a fallback UI
+ */
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <AppContent />
+    </ErrorBoundary>
   );
 }
