@@ -16,7 +16,25 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom'],
+          'animations': ['framer-motion'],
+          'utils': ['lodash', 'axios'],
+        }
+      }
+    },
+    // Optimize build
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
+    },
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 1000,
   },
   resolve: {
     alias: {

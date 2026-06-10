@@ -2,6 +2,42 @@ import axios from 'axios';
 import { getMockProducts } from './stores/mock.js';
 
 /**
+ * Determine if a product is a main product (phone) or an accessory
+ */
+function isMainProduct(title, price) {
+  const titleLower = title.toLowerCase();
+  
+  // Phones/Main Products - typically cost more
+  const phoneKeywords = /iphone|samsung|xiaomi|redmi|oneplus|realme|poco|motorola|nokia|pixel|galaxy|vivo|oppo|huawei|htc|sony|asus|lg|micromax|honor|nothing|tecno|infinix|zte|google pixel|oneplus|nord|pro|max|ultra|plus|turbo|note/i;
+  
+  // Accessories that should be filtered out
+  const accessoryKeywords = /case|cover|protector|screen guard|tempered glass|cable|charger|adapter|silicone|foil|film|screen protector|hard case|soft case|flip case|book case|stand|mount|holder|strap|belt|pouch|sleeve|bag|back cover|bumper|shell|skin|anti-glare|matte|privacy|blue light|glass protector|privacy filter|charging dock|earbuds|headphone|speaker|warranty|protection|glass screen|foil cover|rear cover|front cover|flip cover/i;
+  
+  // If it matches phone keywords, it's likely a main product
+  if (phoneKeywords.test(titleLower)) {
+    return true;
+  }
+  
+  // If it matches accessory keywords, it's likely an accessory
+  if (accessoryKeywords.test(titleLower)) {
+    return false;
+  }
+  
+  // Price-based heuristic: phones are expensive (typically > 5000 INR)
+  // Accessories are usually < 2000 INR
+  if (price > 5000) {
+    return true; // Likely a phone based on price
+  }
+  
+  if (price < 2000) {
+    return false; // Likely an accessory based on price
+  }
+  
+  // Default to true if unclear (give benefit of doubt)
+  return true;
+}
+
+/**
  * Search for products using real-time Google Shopping data via SerpApi.
  * Falls back to mock data if the API key is not configured.
  */
@@ -62,20 +98,21 @@ export async function searchProducts(query) {
              };
           });
           
-          // Smart AI Accessory Filter: 
-          // If user didn't explicitly search for a case/cover, remove cases from results!
-          const isLookingForAccessory = /case|cover|protector|screen guard|glass|cable|charger|adapter/i.test(query);
+          // Smart AI Accessory & Main Product Filter: 
+          // Remove accessories UNLESS user explicitly searched for them
+          const isLookingForAccessory = /case|cover|protector|screen guard|glass|cable|charger|adapter|tempered|foil|film|stand|mount|holder|strap|belt/i.test(query);
 
           let validProducts = products.filter(p => {
              if (p.price <= 0) return false;
              
+             // Use intelligent product detection
              if (!isLookingForAccessory) {
-                const titleLower = p.title.toLowerCase();
-                const isAccessory = /case|cover|protector|screen guard|tempered glass|cable|charger|adapter|silicone/i.test(titleLower);
-                if (isAccessory) {
-                   return false; // Remove cheap accessory to preserve accurate price comparisons!
+                // If user is NOT looking for accessories, only show main products
+                if (!isMainProduct(p.title, p.price)) {
+                   return false; // Remove accessory
                 }
              }
+             
              return true;
           });
           

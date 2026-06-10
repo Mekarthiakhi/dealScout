@@ -1,19 +1,33 @@
 import { useState, useMemo, useEffect } from "react";
 import { debounce } from "lodash";
 import { motion, AnimatePresence } from "framer-motion";
-import { searchProducts } from "./services/product.service";
 import { Product } from "./types/product";
 import ProductCard from "./components/ProductCard";
 import LazyImage from "./components/LazyImage";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { SkeletonLoader, SearchingLoader } from "./components/SkeletonLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "./store";
+import {
+  setQuery,
+  setActiveStoreFilter,
+  setSortBy,
+  fetchProductsAsync,
+  fetchSuggestionsAsync
+} from "./store/slices/searchSlice";
 
 function AppContent() {
-  const [query, setQuery] = useState("");
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [sortBy, setSortBy] = useState("low");
+  const dispatch = useDispatch<AppDispatch>();
+  
+  const {
+    query,
+    products,
+    loading,
+    error,
+    suggestions,
+    activeStoreFilter,
+    sortBy
+  } = useSelector((state: RootState) => state.search);
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -23,10 +37,7 @@ function AppContent() {
   const [toast, setToast] = useState({ message: "", visible: false });
 
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState(-1);
-
-  const [activeStoreFilter, setActiveStoreFilter] = useState("All");
 
   // Load wishlist from localStorage on mount
   useEffect(() => {
@@ -49,47 +60,22 @@ function AppContent() {
   /* SEARCH PRODUCTS */
   /* -------------------------------- */
 
-  const handleSearch = async (customQuery?: string) => {
+  const handleSearch = (customQuery?: string) => {
     const finalQuery = customQuery || query;
 
     if (!finalQuery.trim()) return;
 
-    setLoading(true);
-    setError("");
-    setActiveStoreFilter("All");
-
-    try {
-      const data = await searchProducts(finalQuery);
-      setProducts(data.products || []);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch products");
-    } finally {
-      setLoading(false);
-    }
+    dispatch(fetchProductsAsync(finalQuery));
   };
 
   /* -------------------------------- */
   /* FETCH SUGGESTIONS */
   /* -------------------------------- */
 
-  const fetchSuggestions = async (value: string) => {
-    try {
-      if (!value.trim()) {
-        setSuggestions([]);
-        return;
-      }
-      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${API_BASE_URL}/api/suggestions?q=${encodeURIComponent(value)}`);
-      const data = await response.json();
-      setSuggestions(data.suggestions || []);
-    } catch (error) {
-      console.error('Suggestions error:', error);
-      setSuggestions([]);
-    }
-  };
-
-  const debouncedFetchSuggestions = useMemo(() => debounce(fetchSuggestions, 400), []);
+  const debouncedFetchSuggestions = useMemo(
+    () => debounce((val: string) => dispatch(fetchSuggestionsAsync(val)), 400),
+    [dispatch]
+  );
 
   /* -------------------------------- */
   /* DERIVED STATE & ANALYTICS */
@@ -285,7 +271,7 @@ function AppContent() {
                 value={query}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setQuery(value);
+                  dispatch(setQuery(value));
                   setShowSuggestions(true);
                   setSelectedSuggestion(-1);
                   debouncedFetchSuggestions(value);
@@ -306,7 +292,7 @@ function AppContent() {
                     let selectedValue = query;
                     if (selectedSuggestion >= 0) {
                       selectedValue = suggestions[selectedSuggestion];
-                      setQuery(selectedValue);
+                      dispatch(setQuery(selectedValue));
                     }
                     e.currentTarget.blur();
                     handleSearch(selectedValue);
@@ -337,7 +323,7 @@ function AppContent() {
                   <button
                     key={item}
                     onClick={() => {
-                      setQuery(item);
+                      dispatch(setQuery(item));
                       handleSearch(item);
                       setShowSuggestions(false);
                     }}
@@ -431,7 +417,7 @@ function AppContent() {
                 {stores.map(store => (
                   <button
                     key={store}
-                    onClick={() => setActiveStoreFilter(store)}
+                    onClick={() => dispatch(setActiveStoreFilter(store))}
                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-all
                       ${activeStoreFilter === store
                         ? 'bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(34,211,238,0.4)]'
@@ -445,7 +431,7 @@ function AppContent() {
 
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => dispatch(setSortBy(e.target.value))}
                 className="bg-slate-800 text-white px-4 py-2.5 rounded-xl border border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none cursor-pointer text-sm font-semibold min-w-[160px]"
               >
                 <option value="low">Price: Lowest First</option>
